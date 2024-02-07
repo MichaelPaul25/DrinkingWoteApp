@@ -6,15 +6,15 @@ namespace DrinkingWoteApp_API.Models
     public class Bill
     {
         [Key]
-        public int Bill_Id { get; set; }
-        [ForeignKey("Order_Id")]
-        public Order Order { get; set; }
+        public int BillId { get; set; }
         public string? PaymentMethod { get; set; }
-        public float TotalPaid { get; set; }
-        public int Qty { get; set; }
+        public string? PaymentStatus { get; set; }
+        public float? TotalPaid { get; set; }
+        [ForeignKey("OrderId")]
+        public int? Order_Id { get; set; }
+        public int? Qty { get; set; }
         public DateTime? PaymentDate { get; set; }
-        [ForeignKey("Consument_Id")]
-        public Consumen? Consumen { get; set; }
+        public Consument? Consument { get; set; }
 
     }
 }

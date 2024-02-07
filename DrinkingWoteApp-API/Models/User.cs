@@ -13,8 +13,7 @@ namespace DrinkingWoteApp_API.Models
         public string Password { get; set; }
         [Required]
         public string Email { get; set; }
-        [ForeignKey("Consumen_Id")]
-        public Consumen? Consumen { get; set; }
+        public Consument? Consument { get; set; }
         public string? MobilePhone { get; set; }
         public DateTime? BirthTime { get; set; }
     }
