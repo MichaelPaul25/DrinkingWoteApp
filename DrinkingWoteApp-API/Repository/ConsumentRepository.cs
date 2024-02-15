@@ -1,6 +1,7 @@
 ﻿using DrinkingWoteApp_API.Data;
 using DrinkingWoteApp_API.Interfaces;
 using DrinkingWoteApp_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrinkingWoteApp_API.Repository
 {
@@ -15,7 +16,7 @@ namespace DrinkingWoteApp_API.Repository
 
         public bool ConsumentExists(int id)
         {
-            return _context.Consuments.Any(c => c.ConsumentId == id);
+            return _context.Consuments.Any(c => c.Id == id);
         }
 
         public ICollection<Consument> GetAllConsuments()
@@ -25,7 +26,13 @@ namespace DrinkingWoteApp_API.Repository
 
         public Consument GetDetailConsument(int id)
         {
-            return _context.Consuments.Find(id);
+            //return _context.Consuments.Find(id);
+            var consumentDetails = _context.Consuments.Where(c => c.Id == id)
+                                    .Include(a => a.Address)
+                                    .Include(c => c.User).FirstOrDefault();
+            //var address = _context.Address.Where(a => a.AddressId = consumentDetails.Address)
+
+            return consumentDetails;
         }
         public decimal GetConsumentBalance(int Consumentid)
         {
@@ -36,6 +43,32 @@ namespace DrinkingWoteApp_API.Repository
 
             return Convert.ToDecimal(userBalance.Balance);
             
+        }
+
+        public bool CreateConsument(int UserId, Consument consument)
+        {
+            var user = _context.Users.Find(UserId);
+
+            consument.User = user;
+
+            _context.Add(consument);
+            //Add new Consument ID in User ID field
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+        public bool CheckUserHaveCustomerId(int userId)
+        {
+            var consument = _context.Users.Where(c => c.Id == userId).Select(a => a.Consument != null).FirstOrDefault();
+            if (consument)
+                return true;
+            else
+                return false;
         }
     }
 }

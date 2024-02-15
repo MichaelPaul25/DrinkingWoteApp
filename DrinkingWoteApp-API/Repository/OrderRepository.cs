@@ -1,6 +1,7 @@
 ﻿using DrinkingWoteApp_API.Data;
 using DrinkingWoteApp_API.Interfaces;
 using DrinkingWoteApp_API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrinkingWoteApp_API.Repository
 {
@@ -47,5 +48,41 @@ namespace DrinkingWoteApp_API.Repository
             return _content.Orders.Any(o => o.OrderId == OrderId);
         }
 
+        public bool CreateOrder(Order order, int consumentId, int crewId)
+        {
+            var consument = _content.Consuments.Where(c => c.Id == consumentId)
+                                .Include(a => a.Address).FirstOrDefault();
+            var crew = _content.Crewers.Where(a => a.CrewId == crewId).FirstOrDefault();
+
+            order.Consument = consument;
+            order.Crew = crew;
+
+            //Total paid
+            var price = 5000;
+            var totalPaid = order.Qty * price;
+
+            //Create Order Bill
+            order.Bill = new Bill()
+            {
+                Consument = consument,
+                TotalPaid = totalPaid,
+                Qty = order.Qty
+            };
+
+            _content.Add(order);
+
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _content.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+        public ICollection<Order> GetOrdersbyConsument(int consumentId)
+        {
+            return _content.Orders.Where(o => o.Consument.Id == consumentId).ToList();
+        }
     }
 }

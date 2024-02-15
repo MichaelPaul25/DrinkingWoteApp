@@ -26,7 +26,7 @@ namespace DrinkingWoteApp_API.Repository
 
         public decimal GetUserBalance(int Consumenid)
         {
-            var balance = _context.Consuments.Where(c => c.ConsumentId == Consumenid).FirstOrDefault();
+            var balance = _context.Consuments.Where(c => c.Id == Consumenid).FirstOrDefault();
 
             if (balance == null)
                 return 0;
@@ -35,12 +35,23 @@ namespace DrinkingWoteApp_API.Repository
         }
         public bool UserExist(int userId)
         {
-            return _context.Users.Any(u => u.User_Id == userId);
+            return _context.Users.Any(u => u.Id == userId);
         }
         public ICollection<User> GetUsers()
         {
-            return _context.Users.OrderBy(u => u.User_Id).ToList();
+            return _context.Users.OrderBy(u => u.Id).ToList();
         }
 
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+        public bool CreateUser(User user)
+        {
+            _context.Add(user);
+            return Save();
+        }
     }
 }
