@@ -9,8 +9,16 @@ namespace DrinkingWoteApp_API.Helper
         public MappingProfiles()
         {
             CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
             CreateMap<Consument,  ConsumentDto>();
+            CreateMap<ConsumentDto, Consument>();
             CreateMap<Order, OrderDto>();
+            CreateMap<CrewDto, CrewMember>();
+            CreateMap<CrewMember, CrewDto>();
+            CreateMap<OrderDto, Order>();
+            CreateMap<Order, OrderDto>();
+            CreateMap<BillDto, Bill>();
+            CreateMap<Bill, BillDto>();
         }
     }
 }
