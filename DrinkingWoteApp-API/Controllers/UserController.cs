@@ -82,5 +82,37 @@ namespace DrinkingWoteApp_API.Controllers
 
             return Ok(getUser);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateUser([FromBody] UserDto createUser)
+        {
+            if (createUser == null)
+                return BadRequest(ModelState);
+
+            var user = _userRepository.GetUsers()
+                .Where(u => u.Email == createUser.Email) 
+                .FirstOrDefault();
+
+            if(user != null)
+            {
+                ModelState.AddModelError("", "User already register!");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var Newuser = _mapper.Map<User>(createUser);
+
+            if(!_userRepository.CreateUser(Newuser))
+            {
+                ModelState.AddModelError("", "Can't Add new User!");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Successfully Create new User");
+        }
     }
 }

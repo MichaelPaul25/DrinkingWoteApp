@@ -1,4 +1,5 @@
-﻿using DrinkingWoteApp_API.Interfaces;
+﻿using AutoMapper;
+using DrinkingWoteApp_API.Interfaces;
 using DrinkingWoteApp_API.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace DrinkingWoteApp_API.Controllers
     public class BillController : Controller
     {
         private readonly IBillRepository _billRepository;
+        private readonly IMapper _mapper;
 
-        public BillController(IBillRepository billRepository)
+        public BillController(IBillRepository billRepository, IMapper mapper)
         {
             _billRepository = billRepository;
+            _mapper = mapper;
         }
 
         //Get All Bills
@@ -74,6 +77,29 @@ namespace DrinkingWoteApp_API.Controllers
                 return BadRequest(ModelState);
 
             return Ok(unpaidBills);
+        }
+
+        //Create new Bill
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateBill(Bill createBill, int consumentId, int orderId)
+        {
+            if (createBill == null || consumentId == 0 || orderId == 0)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            var bill = _mapper.Map<Bill>(createBill);
+
+            if(!_billRepository.CreateBill(bill, consumentId, orderId))
+            {
+                ModelState.AddModelError("", "Can't Add new Consument!");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Successfully Create new Bill");
         }
     }
 }

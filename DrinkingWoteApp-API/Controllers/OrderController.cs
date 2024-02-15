@@ -1,6 +1,9 @@
-﻿using DrinkingWoteApp_API.Data;
+﻿using AutoMapper;
+using DrinkingWoteApp_API.Data;
+using DrinkingWoteApp_API.Dto;
 using DrinkingWoteApp_API.Interfaces;
 using DrinkingWoteApp_API.Models;
+using DrinkingWoteApp_API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrinkingWoteApp_API.Controllers
@@ -10,10 +13,12 @@ namespace DrinkingWoteApp_API.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IMapper _mapper;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository, IMapper mapper)
         {
             _orderRepository = orderRepository;
+            _mapper = mapper;
         }
 
         //Get All Order
@@ -45,6 +50,22 @@ namespace DrinkingWoteApp_API.Controllers
 
             return Ok(orderDetail);
         }
+        //Get Order By Consument Id
+        [HttpGet("ConsumentId")]
+        [ProducesResponseType(200, Type = typeof(Order))]
+        [ProducesResponseType(400)]
+        public IActionResult GetOrderByConsument(int consumentId)
+        {
+            var orders = _orderRepository.GetOrdersbyConsument(consumentId);
+
+            if (orders == null)
+                return NotFound("Customer don't have any Order");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(orders);
+        }
 
         //Get Process Order
         [HttpGet("ProcessOrders/")]
@@ -62,7 +83,7 @@ namespace DrinkingWoteApp_API.Controllers
 
         //Get Process Order
         [HttpGet("CountProcess/")]
-        [ProducesResponseType(200, Type = typeof(Order))]
+        [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
         public IActionResult CountProcessOrder()
         {
@@ -72,6 +93,30 @@ namespace DrinkingWoteApp_API.Controllers
                 return BadRequest(ModelState);
 
             return Ok(count);
+        }
+
+        //Create new Consument
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateOrder([FromBody] OrderDto createOrder, int ConsumentId, int CrewId)
+        {
+            if (createOrder == null || ConsumentId == 0 || CrewId ==0)
+                return BadRequest("Request Not Valid!");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            //Inject to Consument DTO
+            var order = _mapper.Map<Order>(createOrder);
+
+            if (!_orderRepository.CreateOrder(order, ConsumentId, CrewId))
+            {
+                ModelState.AddModelError("", "Can't Add new Order!");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Successfully Create new Order");
         }
     }
 }

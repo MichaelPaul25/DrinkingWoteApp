@@ -71,5 +71,38 @@ namespace DrinkingWoteApp_API.Controllers
 
             return Ok(balance);
         }
+
+        //Create new Consument
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateConsument(int userId, [FromBody] ConsumentDto createConsument)
+        {
+            if (createConsument == null || userId == 0)
+                return BadRequest(ModelState);
+
+            //Check if consument exist with same user id
+            var consumentExist = _consumentRepository.CheckUserHaveCustomerId(userId);
+
+            if (consumentExist)
+            {
+                ModelState.AddModelError("", "User already register a Customer!");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            //Inject to Consument DTO
+            var consument = _mapper.Map<Consument>(createConsument);
+
+            if (!_consumentRepository.CreateConsument(userId, consument))
+            {
+                ModelState.AddModelError("", "Can't Add new Consument!");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Successfully Create new Consument");
+        }
     }
 }
