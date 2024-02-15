@@ -4,9 +4,11 @@ namespace DrinkingWoteApp_API.Interfaces
 {
     public interface IBillRepository
     {
-        public ICollection<Bill> GetAllBill();
-        public Bill GetBillDetails(int id);
-        public ICollection<Bill> GetBillByConsumenId(int id);
-        public ICollection<Bill> UnpaidBIll();
+        ICollection<Bill> GetAllBill();
+        Bill GetBillDetails(int id);
+        ICollection<Bill> GetBillByConsumenId(int id);
+        ICollection<Bill> UnpaidBIll();
+        bool CreateBill(Bill bill, int consumentId, int OrderId);
+        bool Save();
     }
 }

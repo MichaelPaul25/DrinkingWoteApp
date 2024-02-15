@@ -9,5 +9,7 @@ namespace DrinkingWoteApp_API.Interfaces
         User GetByUsername(string name);
         decimal GetUserBalance(int Consumenid);
         bool UserExist(int id);
+        bool CreateUser(User user);
+        bool Save();
     }
 }

@@ -4,10 +4,13 @@ namespace DrinkingWoteApp_API.Interfaces
 {
     public interface IOrderRepository
     {
-        public ICollection<Order> GetAllOrders();
-        public Order GetOrderDetail(int id);
-        public ICollection<Order> GetProcessOrder();
-        public decimal CountProcessOrder();
-        public bool OrderExist(int id);
+        ICollection<Order> GetAllOrders();
+        ICollection<Order> GetOrdersbyConsument(int consumentId);
+        Order GetOrderDetail(int id);
+        ICollection<Order> GetProcessOrder();
+        decimal CountProcessOrder();
+        bool OrderExist(int id);
+        bool CreateOrder(Order order, int consumentId, int crewId);
+        bool Save();
     }
 }

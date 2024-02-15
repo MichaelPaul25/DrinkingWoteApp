@@ -4,7 +4,9 @@ namespace DrinkingWoteApp_API.Interfaces
 {
     public interface ICrewRepository
     {
-        public ICollection<CrewMember> GetAllMembers();
-        public CrewMember GetMemberDetails(int id);
+        ICollection<CrewMember> GetAllMembers();
+        CrewMember GetMemberDetails(int id);
+        bool AddNewCrewMember(CrewMember member);
+        bool Save();
     }
 }
