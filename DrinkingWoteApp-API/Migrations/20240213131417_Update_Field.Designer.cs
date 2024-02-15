@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrinkingWoteAppAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240206141537_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240213131417_Update_Field")]
+    partial class UpdateField
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -79,6 +79,9 @@ namespace DrinkingWoteAppAPI.Migrations
                     b.Property<string>("PaymentMethod")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PaymentStatusBill")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Qty")
                         .HasColumnType("int");
 
@@ -94,11 +97,11 @@ namespace DrinkingWoteAppAPI.Migrations
 
             modelBuilder.Entity("DrinkingWoteApp_API.Models.Consument", b =>
                 {
-                    b.Property<int>("ConsumentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ConsumentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("AddressId")
                         .HasColumnType("int");
@@ -115,11 +118,18 @@ namespace DrinkingWoteAppAPI.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ConsumentId");
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Consumens");
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
+
+                    b.ToTable("Consuments");
                 });
 
             modelBuilder.Entity("DrinkingWoteApp_API.Models.CrewMember", b =>
@@ -251,11 +261,11 @@ namespace DrinkingWoteAppAPI.Migrations
 
             modelBuilder.Entity("DrinkingWoteApp_API.Models.User", b =>
                 {
-                    b.Property<int>("User_Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("User_Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("BirthTime")
                         .HasColumnType("datetime2");
@@ -275,12 +285,9 @@ namespace DrinkingWoteAppAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("User_Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("User_Id");
-
-                    b.HasIndex("ConsumentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -309,7 +316,13 @@ namespace DrinkingWoteAppAPI.Migrations
                         .WithMany()
                         .HasForeignKey("AddressId");
 
+                    b.HasOne("DrinkingWoteApp_API.Models.User", "User")
+                        .WithOne("Consument")
+                        .HasForeignKey("DrinkingWoteApp_API.Models.Consument", "UserId");
+
                     b.Navigation("Address");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DrinkingWoteApp_API.Models.Order", b =>
@@ -352,15 +365,6 @@ namespace DrinkingWoteAppAPI.Migrations
                     b.Navigation("Crew");
                 });
 
-            modelBuilder.Entity("DrinkingWoteApp_API.Models.User", b =>
-                {
-                    b.HasOne("DrinkingWoteApp_API.Models.Consument", "Consument")
-                        .WithMany()
-                        .HasForeignKey("ConsumentId");
-
-                    b.Navigation("Consument");
-                });
-
             modelBuilder.Entity("DrinkingWoteApp_API.Models.Consument", b =>
                 {
                     b.Navigation("Bills");
@@ -375,6 +379,11 @@ namespace DrinkingWoteAppAPI.Migrations
                     b.Navigation("Orders");
 
                     b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("DrinkingWoteApp_API.Models.User", b =>
+                {
+                    b.Navigation("Consument");
                 });
 #pragma warning restore 612, 618
         }

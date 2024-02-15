@@ -40,6 +40,23 @@ namespace DrinkingWoteAppAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(name: "User_Name", type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Address",
                 columns: table => new
                 {
@@ -62,25 +79,31 @@ namespace DrinkingWoteAppAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Consumens",
+                name: "Consuments",
                 columns: table => new
                 {
-                    ConsumentId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<int>(type: "int", nullable: true),
                     JoinDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Balance = table.Column<float>(type: "real", nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Consumens", x => x.ConsumentId);
+                    table.PrimaryKey("PK_Consuments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Consumens_Address_AddressId",
+                        name: "FK_Consuments_Address_AddressId",
                         column: x => x.AddressId,
                         principalTable: "Address",
                         principalColumn: "AddressId");
+                    table.ForeignKey(
+                        name: "FK_Consuments_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -90,6 +113,7 @@ namespace DrinkingWoteAppAPI.Migrations
                     BillId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PaymentMethod = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentStatusBill = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TotalPaid = table.Column<float>(type: "real", nullable: true),
                     OrderId = table.Column<int>(name: "Order_Id", type: "int", nullable: true),
                     Qty = table.Column<int>(type: "int", nullable: true),
@@ -100,10 +124,10 @@ namespace DrinkingWoteAppAPI.Migrations
                 {
                     table.PrimaryKey("PK_Bills", x => x.BillId);
                     table.ForeignKey(
-                        name: "FK_Bills_Consumens_ConsumentId",
+                        name: "FK_Bills_Consuments_ConsumentId",
                         column: x => x.ConsumentId,
-                        principalTable: "Consumens",
-                        principalColumn: "ConsumentId");
+                        principalTable: "Consuments",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -123,38 +147,15 @@ namespace DrinkingWoteAppAPI.Migrations
                 {
                     table.PrimaryKey("PK_Reviews", x => x.ReviewId);
                     table.ForeignKey(
-                        name: "FK_Reviews_Consumens_ConsumentId",
+                        name: "FK_Reviews_Consuments_ConsumentId",
                         column: x => x.ConsumentId,
-                        principalTable: "Consumens",
-                        principalColumn: "ConsumentId");
+                        principalTable: "Consuments",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Reviews_Crewers_CrewId",
                         column: x => x.CrewId,
                         principalTable: "Crewers",
                         principalColumn: "CrewId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(name: "User_Id", type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(name: "User_Name", type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConsumentId = table.Column<int>(type: "int", nullable: true),
-                    MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Users_Consumens_ConsumentId",
-                        column: x => x.ConsumentId,
-                        principalTable: "Consumens",
-                        principalColumn: "ConsumentId");
                 });
 
             migrationBuilder.CreateTable(
@@ -183,10 +184,10 @@ namespace DrinkingWoteAppAPI.Migrations
                         principalTable: "Bills",
                         principalColumn: "BillId");
                     table.ForeignKey(
-                        name: "FK_Orders_Consumens_ConsumentId",
+                        name: "FK_Orders_Consuments_ConsumentId",
                         column: x => x.ConsumentId,
-                        principalTable: "Consumens",
-                        principalColumn: "ConsumentId");
+                        principalTable: "Consuments",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Orders_Crewers_CrewId",
                         column: x => x.CrewId,
@@ -210,9 +211,16 @@ namespace DrinkingWoteAppAPI.Migrations
                 column: "ConsumentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Consumens_AddressId",
-                table: "Consumens",
+                name: "IX_Consuments_AddressId",
+                table: "Consuments",
                 column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Consuments_UserId",
+                table: "Consuments",
+                column: "UserId",
+                unique: true,
+                filter: "[UserId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_BillId",
@@ -243,11 +251,6 @@ namespace DrinkingWoteAppAPI.Migrations
                 name: "IX_Reviews_CrewId",
                 table: "Reviews",
                 column: "CrewId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_ConsumentId",
-                table: "Users",
-                column: "ConsumentId");
         }
 
         /// <inheritdoc />
@@ -257,22 +260,22 @@ namespace DrinkingWoteAppAPI.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Bills");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
-                name: "Consumens");
+                name: "Consuments");
 
             migrationBuilder.DropTable(
                 name: "Crewers");
 
             migrationBuilder.DropTable(
                 name: "Address");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Perumahans");

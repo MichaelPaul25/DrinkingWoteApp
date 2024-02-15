@@ -101,7 +101,7 @@ namespace DrinkingWoteApp_API
                         {
                             PaymentMethod = "CASH",
                             TotalPaid = 5000,
-                            Order_Id = 1,
+                            //Order_Id = 1,
                             Qty = 1,
                             PaymentDate = new DateTime(2024,7,2, 10,01,00),
                         },
@@ -141,7 +141,7 @@ namespace DrinkingWoteApp_API
                         {
                             PaymentMethod = "CASH",
                             TotalPaid = 5000,
-                            Order_Id = 1,
+                            //Order_Id = 1,
                             Qty = 1,
                             PaymentDate = new DateTime(2024,7,2, 10,01,00),
                         },

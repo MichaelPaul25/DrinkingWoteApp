@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddTransient<Seed>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(
+    options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 //Dependency Injection
 builder.Services.AddScoped<IConsumentRepository, ConsumentRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
