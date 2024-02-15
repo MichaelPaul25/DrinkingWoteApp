@@ -19,24 +19,38 @@ namespace DrinkingWoteApp_API.Data
         public DbSet<Perumahan> Perumahans { get; set; }
         //public DbSet<ConsumentOrder> ConsumentOrders { get; set; }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<ConsumentOrder>()
-        //        .HasKey(co => new { co.JoinConsumentId, co.JoinOrderId });
-            
-        //    modelBuilder.Entity<ConsumentOrder>()
-        //        .HasOne(p => p.Consument)
-        //        .WithMany(co => co.ConsumenOrders)
-        //        .HasForeignKey(o => o.JoinConsumentId)
-        //        .IsRequired(false)
-        //       .OnDelete(DeleteBehavior.SetNull);
-        //    modelBuilder.Entity<ConsumentOrder>()
-        //       .HasOne(p => p.Order)
-        //       .WithMany(co => co.ConsumentOrders)
-        //       .HasForeignKey(o => o.JoinOrderId)
-        //       .IsRequired(false)
-        //       .OnDelete(DeleteBehavior.SetNull);
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //Relation User to Consument (One to One)
+            modelBuilder.Entity<User>()
+                        .HasOne(c => c.Consument)
+                        .WithOne(u => u.User)
+                        .HasForeignKey<Consument>("UserId");
+
+            //Relation Order to Bill(One to One)
+            //modelBuilder.Entity<Order>()
+            //            .HasOne(o => o.Bill)
+            //            .WithOne(b => b.Order)
+            //            .HasForeignKey<Bill>("Order_Id");
+
+
+            ////Relation Many to Many
+            //    modelBuilder.Entity<ConsumentOrder>()
+            //        .HasKey(co => new { co.JoinConsumentId, co.JoinOrderId });
+
+            //    modelBuilder.Entity<ConsumentOrder>()
+            //        .HasOne(p => p.Consument)
+            //        .WithMany(co => co.ConsumenOrders)
+            //        .HasForeignKey(o => o.JoinConsumentId)
+            //        .IsRequired(false)
+            //       .OnDelete(DeleteBehavior.SetNull);
+            //    modelBuilder.Entity<ConsumentOrder>()
+            //       .HasOne(p => p.Order)
+            //       .WithMany(co => co.ConsumentOrders)
+            //       .HasForeignKey(o => o.JoinOrderId)
+            //       .IsRequired(false)
+            //       .OnDelete(DeleteBehavior.SetNull);
+        }
 
     }
 }
