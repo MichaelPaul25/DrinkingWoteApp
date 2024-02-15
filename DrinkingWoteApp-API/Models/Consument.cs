@@ -7,9 +7,10 @@ namespace DrinkingWoteApp_API.Models
     public class Consument
     {
         [Key]
-        public int ConsumentId { get; set; }
+        public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public User? User { get; set; }
         public DateTime? JoinDate { get; set; }
         public float? Balance { get; set; }
         public ICollection<Order>? Orders { get; set; }
