@@ -10,6 +10,8 @@ namespace DrinkingWoteApp_API.Interfaces
         decimal GetConsumentBalance(int Consumentid);
         bool ConsumentExists(int id);
         bool CreateConsument(int UserId, Consument consument);
+        bool UpdateConsument(int Id, Consument consument);
+        bool DeleteConsument(Consument consument);
         bool Save();
     }
 }

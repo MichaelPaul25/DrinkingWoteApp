@@ -11,6 +11,8 @@ namespace DrinkingWoteApp_API.Interfaces
         decimal CountProcessOrder();
         bool OrderExist(int id);
         bool CreateOrder(Order order, int consumentId, int crewId);
+        bool UpdateOrder(Order order, int consumentId, int OrderId);
+        bool DeleteOrder(Order order);
         bool Save();
     }
 }

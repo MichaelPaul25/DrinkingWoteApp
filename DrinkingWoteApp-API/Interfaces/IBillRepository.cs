@@ -8,7 +8,10 @@ namespace DrinkingWoteApp_API.Interfaces
         Bill GetBillDetails(int id);
         ICollection<Bill> GetBillByConsumenId(int id);
         ICollection<Bill> UnpaidBIll();
+        bool ExistBill(int Billid);
         bool CreateBill(Bill bill, int consumentId, int OrderId);
+        bool UpdateBill(Bill bill);
+        bool DeleteBill(Bill bill);
         bool Save();
     }
 }
