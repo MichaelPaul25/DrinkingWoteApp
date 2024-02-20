@@ -25,6 +25,7 @@ namespace DrinkingWoteApp_API.Controllers
         public IActionResult GetUsers()
         {
             var users = _mapper.Map<List<UserDto>>(_userRepository.GetUsers());
+            //var users = _userRepository.GetUsers();
 
             if (!ModelState.IsValid)
             {
@@ -113,6 +114,58 @@ namespace DrinkingWoteApp_API.Controllers
             }
 
             return Ok("Successfully Create new User");
+        }
+
+        [HttpPut("{Id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateUser(int Id, [FromBody] UserDto updateUser)
+        {
+            if(updateUser == null)
+                return BadRequest(ModelState);
+
+            if(Id != updateUser.Id)
+                return BadRequest(ModelState);
+
+            if (!_userRepository.UserExist(Id))
+                return NotFound($"User Id {Id} Not Found!");
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var userMap = _mapper.Map<User>(updateUser);
+
+            if(!_userRepository.UpdateUser(userMap))
+            {
+                ModelState.AddModelError("", "Update user data error!");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Update Successfully");
+        }
+
+        //Delete user
+        [HttpDelete("{Id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteUser(int Id)
+        {
+            if (!_userRepository.UserExist(Id))
+                return NotFound();
+
+            var userToDelete = _userRepository.GetById(Id);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_userRepository.DeleteUser(userToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting user");
+            }
+
+            return Ok("Delete User Successfully!");
         }
     }
 }

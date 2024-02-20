@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using DrinkingWoteApp_API.Dto;
 using DrinkingWoteApp_API.Interfaces;
 using DrinkingWoteApp_API.Models;
+using DrinkingWoteApp_API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrinkingWoteApp_API.Controllers
@@ -100,6 +102,58 @@ namespace DrinkingWoteApp_API.Controllers
             }
 
             return Ok("Successfully Create new Bill");
+        }
+
+        //Update Data Bill
+        [HttpPut("{BillId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateBill(int BillId, [FromBody] BillDto updateBill)
+        {
+            if (updateBill == null)
+                return BadRequest(ModelState);
+
+            if (BillId != updateBill.BillId)
+                return BadRequest(ModelState);
+
+            if (!_billRepository.ExistBill(BillId))
+                return NotFound($"Bill Id {BillId} Not Found!");
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var billMap = _mapper.Map<Bill>(updateBill);
+
+            if (!_billRepository.UpdateBill(billMap))
+            {
+                ModelState.AddModelError("", "Update Bill data error!");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Update Bill Successfully");
+        }
+        //Delete Bill
+        [HttpDelete("{BillId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteBill(int BillId)
+        {
+            if (!_billRepository.ExistBill(BillId))
+                return NotFound();
+
+            var billToDelete = _billRepository.GetBillDetails(BillId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_billRepository.DeleteBill(billToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting Bill");
+            }
+
+            return Ok("Delete Bill Successfully!");
         }
     }
 }

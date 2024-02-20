@@ -104,5 +104,56 @@ namespace DrinkingWoteApp_API.Controllers
 
             return Ok("Successfully Create new Consument");
         }
+        [HttpPut("{Id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateConsument(int Id, [FromBody] ConsumentDto updateConsument)
+        {
+            if (updateConsument == null)
+                return BadRequest(ModelState);
+
+            if (Id != updateConsument.Id)
+                return BadRequest(ModelState);
+
+            if (!_consumentRepository.ConsumentExists(Id))
+                return NotFound($"Consument Id {Id} Not Found!");
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var consument = _mapper.Map<Consument>(updateConsument);
+
+            if (!_consumentRepository.UpdateConsument(Id, consument))
+            {
+                ModelState.AddModelError("", "Update Consument data error!");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Update Consument Successfully");
+        }
+
+        //Delete Consument
+        [HttpDelete("{Id}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteUser(int Id)
+        {
+            if (!_consumentRepository.ConsumentExists(Id))
+                return NotFound();
+
+            var consumentToDelete = _consumentRepository.GetDetailConsument(Id);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_consumentRepository.DeleteConsument(consumentToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting consument");
+            }
+
+            return Ok("Delete consument Successfully!");
+        }
     }
 }

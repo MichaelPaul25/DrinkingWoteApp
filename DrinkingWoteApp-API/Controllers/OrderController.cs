@@ -118,5 +118,60 @@ namespace DrinkingWoteApp_API.Controllers
 
             return Ok("Successfully Create new Order");
         }
+
+        //Update the Order
+        [HttpPut("{OrderId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateOrder([FromBody] OrderDto updateOrder,
+            [FromQuery] int consumentId,
+            int OrderId)
+        {
+            if (updateOrder == null)
+                return BadRequest(ModelState);
+
+            if (OrderId != updateOrder.OrderId)
+                return BadRequest(ModelState);
+
+            if (!_orderRepository.OrderExist(OrderId))
+                return NotFound($"Order Id {OrderId} Not Found!");
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var order = _mapper.Map<Order>(updateOrder);
+
+            if (!_orderRepository.UpdateOrder(order, consumentId, OrderId))
+            {
+                ModelState.AddModelError("", "Update Order data error!");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Update Order Successfully");
+        }
+
+        //Delete Order
+        [HttpDelete("{OrderId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteOrder(int OrderId)
+        {
+            if (!_orderRepository.OrderExist(OrderId))
+                return NotFound();
+
+            var orderToDelete = _orderRepository.GetOrderDetail(OrderId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_orderRepository.DeleteOrder(orderToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting order!");
+            }
+
+            return Ok("Delete Order Successfully!");
+        }
     }
 }

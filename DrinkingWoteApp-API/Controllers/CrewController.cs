@@ -2,6 +2,7 @@
 using DrinkingWoteApp_API.Dto;
 using DrinkingWoteApp_API.Interfaces;
 using DrinkingWoteApp_API.Models;
+using DrinkingWoteApp_API.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DrinkingWoteApp_API.Controllers
@@ -68,6 +69,59 @@ namespace DrinkingWoteApp_API.Controllers
             }
 
             return Ok("Successfully Create new Crew Member");
+        }
+
+        //Update Crew Member
+        [HttpPut("{CrewId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCrew(int CrewId, [FromBody] CrewDto updateCrew)
+        {
+            if (updateCrew == null)
+                return BadRequest(ModelState);
+
+            if (CrewId != updateCrew.CrewId)
+                return BadRequest(ModelState);
+
+            if (!_crewRepository.CrewExist(CrewId))
+                return NotFound($"Crew Id {CrewId} Not Found!");
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var crewMap = _mapper.Map<CrewMember>(updateCrew);
+
+            if (!_crewRepository.UpdateCrewMember(crewMap))
+            {
+                ModelState.AddModelError("", "Update Crew data error!");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Update Crew Successfully");
+        }
+
+        //Delete Crew
+        [HttpDelete("{CrewId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCrew(int CrewId)
+        {
+            if (!_crewRepository.CrewExist(CrewId))
+                return NotFound();
+
+            var crewToDelete = _crewRepository.GetMemberDetails(CrewId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_crewRepository.DeleteCrewMember(crewToDelete))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting Crew");
+            }
+
+            return Ok("Delete Crew Successfully!");
         }
     }
 }
