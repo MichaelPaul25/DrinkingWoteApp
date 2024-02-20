@@ -23,6 +23,17 @@ namespace DrinkingWoteApp_API.Repository
             return Save();
         }
 
+        public bool DeleteBill(Bill bill)
+        {
+            _context.Remove(bill);
+            return Save();
+        }
+
+        public bool ExistBill(int Billid)
+        {
+            return _context.Bills.Any(b=> b.BillId ==Billid);
+        }
+
         public ICollection<Bill> GetAllBill()
         {
             return _context.Bills.ToList();
@@ -47,6 +58,12 @@ namespace DrinkingWoteApp_API.Repository
         public ICollection<Bill> UnpaidBIll()
         {
             return _context.Bills.Where(b => b.PaymentStatusBill == "UNPAID").ToList();
+        }
+
+        public bool UpdateBill(Bill bill)
+        {
+            _context.Update(bill);
+            return Save();
         }
     }
 }

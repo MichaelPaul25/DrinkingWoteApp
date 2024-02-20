@@ -7,29 +7,29 @@ namespace DrinkingWoteApp_API.Repository
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly AppDbContext _content;
+        private readonly AppDbContext _context;
 
-        public OrderRepository(AppDbContext content)
+        public OrderRepository(AppDbContext context)
         {
-            _content = content;
+            _context = context;
         }
 
         //Get all
         public ICollection<Order> GetAllOrders()
         {
-            return _content.Orders.ToList();
+            return _context.Orders.ToList();
         }
 
         //Get Order Detail
         public Order GetOrderDetail(int id)
         {
-            return _content.Orders.Find(id);
+            return _context.Orders.Find(id);
         }
 
         //Get all Process Order
         public ICollection<Order> GetProcessOrder() 
         {
-            var orders = _content.Orders.Where(o => o.StatusOrder == "PROCESS");
+            var orders = _context.Orders.Where(o => o.StatusOrder == "PROCESS");
 
             return orders.ToList();
         }
@@ -37,7 +37,7 @@ namespace DrinkingWoteApp_API.Repository
         //Count process Order
         public decimal CountProcessOrder()
         {
-            var orders = _content.Orders.Where(o => o.StatusOrder == "PROCESS");
+            var orders = _context.Orders.Where(o => o.StatusOrder == "PROCESS");
 
             return orders.Count();
         }
@@ -45,14 +45,14 @@ namespace DrinkingWoteApp_API.Repository
         //Find Exist Order
         public bool OrderExist(int OrderId)
         {
-            return _content.Orders.Any(o => o.OrderId == OrderId);
+            return _context.Orders.Any(o => o.OrderId == OrderId);
         }
 
         public bool CreateOrder(Order order, int consumentId, int crewId)
         {
-            var consument = _content.Consuments.Where(c => c.Id == consumentId)
+            var consument = _context.Consuments.Where(c => c.Id == consumentId)
                                 .Include(a => a.Address).FirstOrDefault();
-            var crew = _content.Crewers.Where(a => a.CrewId == crewId).FirstOrDefault();
+            var crew = _context.Crewers.Where(a => a.CrewId == crewId).FirstOrDefault();
 
             order.Consument = consument;
             order.Crew = crew;
@@ -66,23 +66,35 @@ namespace DrinkingWoteApp_API.Repository
             {
                 Consument = consument,
                 TotalPaid = totalPaid,
-                Qty = order.Qty
+                Qty = order.Qty,
             };
 
-            _content.Add(order);
+            _context.Add(order);
 
             return Save();
         }
 
         public bool Save()
         {
-            var saved = _content.SaveChanges();
+            var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
 
         public ICollection<Order> GetOrdersbyConsument(int consumentId)
         {
-            return _content.Orders.Where(o => o.Consument.Id == consumentId).ToList();
+            return _context.Orders.Where(o => o.Consument.Id == consumentId).ToList();
+        }
+
+        public bool UpdateOrder(Order order, int consumentId, int OrderId)
+        {
+            _context.Update(order);
+            return Save();
+        }
+
+        public bool DeleteOrder(Order order)
+        {
+            _context.Remove(order);
+            return Save();
         }
     }
 }

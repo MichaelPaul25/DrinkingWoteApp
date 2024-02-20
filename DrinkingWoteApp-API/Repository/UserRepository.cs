@@ -39,7 +39,7 @@ namespace DrinkingWoteApp_API.Repository
         }
         public ICollection<User> GetUsers()
         {
-            return _context.Users.OrderBy(u => u.Id).ToList();
+            return _context.Users.ToList();
         }
 
         public bool Save()
@@ -51,6 +51,18 @@ namespace DrinkingWoteApp_API.Repository
         public bool CreateUser(User user)
         {
             _context.Add(user);
+            return Save();
+        }
+
+        public bool UpdateUser(User user)
+        {
+            _context.Update(user);
+            return Save();
+        }
+
+        public bool DeleteUser(User user)
+        {
+            _context.Remove(user);
             return Save();
         }
     }

@@ -70,5 +70,17 @@ namespace DrinkingWoteApp_API.Repository
             else
                 return false;
         }
+
+        public bool UpdateConsument(int Id, Consument consument)
+        {
+            _context.Update(consument);
+            return Save();
+        }
+
+        public bool DeleteConsument(Consument consument)
+        {
+            _context.Remove(consument);
+            return Save();
+        }
     }
 }

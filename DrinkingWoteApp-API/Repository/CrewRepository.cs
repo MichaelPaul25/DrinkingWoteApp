@@ -24,6 +24,17 @@ namespace DrinkingWoteApp_API.Repository
             return Save();
         }
 
+        public bool CrewExist(int CrewId)
+        {
+            return _context.Crewers.Any(c => c.CrewId == CrewId);
+        }
+
+        public bool DeleteCrewMember(CrewMember member)
+        {
+            _context.Remove(member);
+            return Save();
+        }
+
         public ICollection<CrewMember> GetAllMembers()
         {
             return _context.Crewers.ToList();
@@ -38,6 +49,12 @@ namespace DrinkingWoteApp_API.Repository
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdateCrewMember(CrewMember member)
+        {
+            _context.Update(member);
+            return Save();
         }
     }
 }
