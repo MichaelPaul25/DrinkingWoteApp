@@ -4,7 +4,7 @@ namespace DrinkingWoteApp_API.Dto
 {
     public class ConsumentDto
     {
-        public int ConsumentId { get; set; }
+        public int Id { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? JoinDate { get; set; }
