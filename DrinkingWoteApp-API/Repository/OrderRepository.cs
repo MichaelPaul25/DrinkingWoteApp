@@ -17,7 +17,7 @@ namespace DrinkingWoteApp_API.Repository
         //Get all
         public ICollection<Order> GetAllOrders()
         {
-            return _context.Orders.ToList();
+            return _context.Orders.Include(c => c.Consument).ToList();
         }
 
         //Get Order Detail
