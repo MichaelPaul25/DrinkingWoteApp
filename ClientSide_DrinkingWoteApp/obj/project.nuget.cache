@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Ga3G/B1kNlgZUlUDlBqxlSgIBzXyWdhbiSb2MPySGSkKmKzKoDzd5Ao/1He75Zbi/vRZyk8p1NI6zSO7G6SMVA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\PC-Michael\\source\\repos\\DrinkingWoteApp\\ClientSide_DrinkingWoteApp\\ClientSide_DrinkingWoteApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\PC-Michael\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

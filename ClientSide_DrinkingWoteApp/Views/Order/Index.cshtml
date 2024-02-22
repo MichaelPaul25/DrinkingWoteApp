@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ClientSide_DrinkingWoteApp.Models.Order>
+@{
+    ViewData["Title"] = "Order Page";
+}
+<style>
+    #sideBar_Order{
+        color: var(--primary);
+        background: var(--dark);
+        border-color: var(--primary);
+    }
+</style>
+<div class="container-fluid pt-4 px-4">
+    <div class="col-12">
+        <div class="bg-secondary rounded h-100 p-4">
+            <h6 class="mb-4">List Of Order</h6>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">@Html.DisplayNameFor(model => model.OrderId)</th>
+                            <th scope="col"></th>
+                            <th scope="col">Consument Name</th>
+                            <th scope="col">Order Time</th>
+                            <th scope="col">Status Order</th>
+                            <th scope="col">Payment Methode</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(m => item.OrderId)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Details", "Details")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.Consument.FirstName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.TimeOrder)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.StatusOrder)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(m => item.PaymentMethod)
+                                </td>
+                            </tr>    
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

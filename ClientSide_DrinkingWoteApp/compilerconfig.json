@@ -1,0 +1,30 @@
+﻿[
+  {
+    "outputFile": "wwwroot/scss/bootstrap.css",
+    "inputFile": "wwwroot/scss/bootstrap.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/bootstrap/scss/_accordion.css",
+    "inputFile": "wwwroot/scss/bootstrap/scss/_accordion.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/bootstrap/scss/forms/_floating-labels.css",
+    "inputFile": "wwwroot/scss/bootstrap/scss/forms/_floating-labels.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/bootstrap/scss/helpers/_clearfix.css",
+    "inputFile": "wwwroot/scss/bootstrap/scss/helpers/_clearfix.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/bootstrap/scss/mixins/_alert.css",
+    "inputFile": "wwwroot/scss/bootstrap/scss/mixins/_alert.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/bootstrap/scss/utilities/_api.css",
+    "inputFile": "wwwroot/scss/bootstrap/scss/utilities/_api.scss"
+  },
+  {
+    "outputFile": "wwwroot/scss/bootstrap/scss/vendor/_rfs.css",
+    "inputFile": "wwwroot/scss/bootstrap/scss/vendor/_rfs.scss"
+  }
+]
