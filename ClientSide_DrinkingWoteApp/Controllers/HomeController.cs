@@ -1,4 +1,5 @@
-﻿using ClientSide_DrinkingWoteApp.Models;
+﻿using ClientSide_DrinkingWoteApp.Dto;
+using ClientSide_DrinkingWoteApp.Models;
 using ClientSide_DrinkingWoteApp.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -14,13 +15,13 @@ namespace ClientSide_DrinkingWoteApp.Controllers
             _orderRepository = new OrderRepository();
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            List<Order> orderList = new List<Order>();
+            HomePageDataDTO dataDto = new HomePageDataDTO();
 
-            orderList = _orderRepository.GetOrders();
-
-            return View(orderList);
+            dataDto = await _orderRepository.GetHomePageData();
+            
+            return View(dataDto);
         }
 
         public IActionResult Privacy()

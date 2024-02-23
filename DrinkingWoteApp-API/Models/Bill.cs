@@ -14,6 +14,7 @@ namespace DrinkingWoteApp_API.Models
         public int? Order_Id { get; set; }
         //public Order? Order { get; set; }
         public int? Qty { get; set; }
+        public DateTime OrderTime { get; set; }
         public DateTime? PaymentDate { get; set; }
         public Consument? Consument { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using DrinkingWoteApp_API.Models;
+using DrinkingWoteApp_API.Dto;
 
 namespace DrinkingWoteApp_API.Interfaces
 {
@@ -7,6 +8,7 @@ namespace DrinkingWoteApp_API.Interfaces
         ICollection<Order> GetAllOrders();
         ICollection<Order> GetOrdersbyConsument(int consumentId);
         Order GetOrderDetail(int id);
+        ICollection<Order> GetOrderToday();
         ICollection<Order> GetProcessOrder();
         decimal CountProcessOrder();
         bool OrderExist(int id);
@@ -14,5 +16,7 @@ namespace DrinkingWoteApp_API.Interfaces
         bool UpdateOrder(Order order, int consumentId, int OrderId);
         bool DeleteOrder(Order order);
         bool Save();
+        double CountOrderToday();
+        QuickCountDto quickcount();
     }
 }

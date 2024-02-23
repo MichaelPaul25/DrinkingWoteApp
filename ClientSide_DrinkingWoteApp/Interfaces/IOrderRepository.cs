@@ -1,4 +1,5 @@
-﻿using ClientSide_DrinkingWoteApp.Models;
+﻿using ClientSide_DrinkingWoteApp.Dto;
+using ClientSide_DrinkingWoteApp.Models;
 
 namespace ClientSide_DrinkingWoteApp.Interfaces
 {
@@ -6,5 +7,6 @@ namespace ClientSide_DrinkingWoteApp.Interfaces
     {
         List<Order> GetOrders();
         Task<Order> GetById(int id);
+        Task<HomePageDataDTO?> GetHomePageData();
     }
 }

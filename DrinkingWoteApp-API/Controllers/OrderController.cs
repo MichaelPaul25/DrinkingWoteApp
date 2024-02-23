@@ -67,6 +67,36 @@ namespace DrinkingWoteApp_API.Controllers
             return Ok(orders);
         }
 
+        //Get Home Page Data
+        [HttpGet("GetHomePageData")]
+        [ProducesResponseType(200, Type = typeof(HomePageDataDto))]
+        [ProducesResponseType(400)]
+        public IActionResult GetHomePageData()
+        {
+            HomePageDataDto homePageData = new HomePageDataDto();
+            homePageData.Orders = _orderRepository.GetAllOrders();
+
+            homePageData.QuickCount = _orderRepository.quickcount();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(homePageData);
+        }
+        //Get Order Today
+        [HttpGet("CountOrderToday/")]
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(400)]
+        public IActionResult CountOrdersToday()
+        {
+            var count = _orderRepository.CountOrderToday();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(count);
+        }
+
         //Get Process Order
         [HttpGet("ProcessOrders/")]
         [ProducesResponseType(200, Type = typeof(Order))]
