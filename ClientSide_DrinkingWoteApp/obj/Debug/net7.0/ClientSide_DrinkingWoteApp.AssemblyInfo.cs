@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ClientSide_DrinkingWoteApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+de14e4df9c8ee38427d2f278e4c0db240b7e9a31")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5f442d3242ba077eadb2897e5a52ee017c244294")]
 [assembly: System.Reflection.AssemblyProductAttribute("ClientSide_DrinkingWoteApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ClientSide_DrinkingWoteApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

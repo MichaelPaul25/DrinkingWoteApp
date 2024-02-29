@@ -8,18 +8,18 @@ namespace ClientSide_DrinkingWoteApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly OrderRepository _orderRepository;
+        private readonly HomeRepository _homeRepository;
 
         public HomeController()
         {
-            _orderRepository = new OrderRepository();
+            _homeRepository = new HomeRepository();
         }
 
         public async Task<IActionResult> Index()
         {
             HomePageDataDTO dataDto = new HomePageDataDTO();
 
-            dataDto = await _orderRepository.GetHomePageData();
+            dataDto = await _homeRepository.GetHomePageData();
             
             return View(dataDto);
         }

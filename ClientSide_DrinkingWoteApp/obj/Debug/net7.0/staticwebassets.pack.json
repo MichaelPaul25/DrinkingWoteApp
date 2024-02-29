@@ -21,6 +21,18 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\PC-Michael\\source\\repos\\DrinkingWoteApp\\ClientSide_DrinkingWoteApp\\wwwroot\\img\\logo-app.png",
+      "PackagePath": "staticwebassets\\img\\logo-app.png"
+    },
+    {
+      "Id": "C:\\Users\\PC-Michael\\source\\repos\\DrinkingWoteApp\\ClientSide_DrinkingWoteApp\\wwwroot\\img\\logo-no-background.png",
+      "PackagePath": "staticwebassets\\img\\logo-no-background.png"
+    },
+    {
+      "Id": "C:\\Users\\PC-Michael\\source\\repos\\DrinkingWoteApp\\ClientSide_DrinkingWoteApp\\wwwroot\\img\\logo.jpeg",
+      "PackagePath": "staticwebassets\\img\\logo.jpeg"
+    },
+    {
       "Id": "C:\\Users\\PC-Michael\\source\\repos\\DrinkingWoteApp\\ClientSide_DrinkingWoteApp\\wwwroot\\img\\testimonial-1.jpg",
       "PackagePath": "staticwebassets\\img\\testimonial-1.jpg"
     },

@@ -7,6 +7,6 @@ namespace ClientSide_DrinkingWoteApp.Interfaces
     {
         List<Order> GetOrders();
         Task<Order> GetById(int id);
-        Task<HomePageDataDTO?> GetHomePageData();
+        bool CreateOrder(Order order, int consumentId, int crewId);
     }
 }

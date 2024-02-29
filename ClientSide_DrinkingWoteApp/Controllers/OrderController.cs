@@ -14,6 +14,7 @@ namespace ClientSide_DrinkingWoteApp.Controllers
         {
             _orderRepository = new OrderRepository();
         }
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             List<Order> orderList = new List<Order>();
@@ -21,6 +22,24 @@ namespace ClientSide_DrinkingWoteApp.Controllers
             orderList = _orderRepository.GetOrders();
 
             return View(orderList);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Order newOrder, int consumentId, int crewId)
+        {
+            bool createOrder = _orderRepository.CreateOrder(newOrder, consumentId, crewId);
+
+            if (createOrder)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(newOrder);
         }
     }
 }

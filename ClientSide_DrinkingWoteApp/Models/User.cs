@@ -4,8 +4,7 @@ namespace ClientSide_DrinkingWoteApp.Models
 {
     public class User
     {
-        [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string? User_Name { get; set; }
         [Required]
         public string Password { get; set; }

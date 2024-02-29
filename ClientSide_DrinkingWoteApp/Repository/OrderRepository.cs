@@ -1,7 +1,9 @@
 ﻿using ClientSide_DrinkingWoteApp.Dto;
 using ClientSide_DrinkingWoteApp.Interfaces;
 using ClientSide_DrinkingWoteApp.Models;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace ClientSide_DrinkingWoteApp.Repository
 {
@@ -33,25 +35,25 @@ namespace ClientSide_DrinkingWoteApp.Repository
             return orderList;
         }
 
-        public async Task<HomePageDataDTO?> GetHomePageData()
+        public bool CreateOrder(Order order, int consumentId, int crewId)
         {
-            HomePageDataDTO dataDTO = new HomePageDataDTO();
-
-            HttpResponseMessage response = _client.GetAsync(_client.BaseAddress + "/Order/GetHomePageData").Result;
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string data = response.Content.ReadAsStringAsync().Result;
-                dataDTO = JsonConvert.DeserializeObject<HomePageDataDTO>(data);
+                string dataOrder = JsonConvert.SerializeObject(order);
+                StringContent content = new StringContent(dataOrder, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = _client.PostAsync(_client.BaseAddress + "/Order/CreateOrder/"+ consumentId + "/" + crewId, content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+
+                return false;
             }
-
-            return dataDTO;
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
-        private string convertToCurrency(double number)
-        {
-            string resultCurrency = number.ToString("C0");
-            return resultCurrency;
-        }
     }
 }
