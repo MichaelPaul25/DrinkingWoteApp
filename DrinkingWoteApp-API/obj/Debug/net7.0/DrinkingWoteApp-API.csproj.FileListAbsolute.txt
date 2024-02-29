@@ -80,3 +80,4 @@ C:\Users\PC-Michael\source\repos\DrinkingWoteApp\DrinkingWoteApp-API\bin\Debug\n
 C:\Users\PC-Michael\source\repos\DrinkingWoteApp\DrinkingWoteApp-API\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\PC-Michael\source\repos\DrinkingWoteApp\DrinkingWoteApp-API\bin\Debug\net7.0\Newtonsoft.Json.dll
 C:\Users\PC-Michael\source\repos\DrinkingWoteApp\DrinkingWoteApp-API\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
+C:\Users\PC-Michael\source\repos\DrinkingWoteApp\DrinkingWoteApp-API\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

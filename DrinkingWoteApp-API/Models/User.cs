@@ -1,12 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DrinkingWoteApp_API.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
         public string? User_Name { get; set;}
         [Required]
         public string Password { get; set; }

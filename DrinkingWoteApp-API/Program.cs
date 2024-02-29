@@ -1,7 +1,10 @@
 using DrinkingWoteApp_API;
 using DrinkingWoteApp_API.Data;
 using DrinkingWoteApp_API.Interfaces;
+using DrinkingWoteApp_API.Models;
 using DrinkingWoteApp_API.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,23 +29,33 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
 
 var app = builder.Build();
 
 
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
-    SeedData(app);
-
-void SeedData(IHost app)
 {
-    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
-
-    using (var scope = scopedFactory.CreateScope())
-    {
-        var service = scope.ServiceProvider.GetService<Seed>();
-        service.SeedDataContext();
-    }
+    await Seed.SeedUsersAndRolesAsync(app);
+    //SeedData(app);
 }
+    
+
+//void SeedData(IHost app)
+//{
+//    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+//    using (var scope = scopedFactory.CreateScope())
+//    {
+//        var service = scope.ServiceProvider.GetService<Seed>();
+//        service.SeedDataContext();
+//    }
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

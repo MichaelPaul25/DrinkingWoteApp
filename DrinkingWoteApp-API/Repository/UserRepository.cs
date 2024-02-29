@@ -35,7 +35,7 @@ namespace DrinkingWoteApp_API.Repository
         }
         public bool UserExist(int userId)
         {
-            return _context.Users.Any(u => u.Id == userId);
+            return _context.Users.Any(u => u.Id == userId.ToString());
         }
         public ICollection<User> GetUsers()
         {

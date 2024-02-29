@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DrinkingWoteApp_API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UserController : Controller
     {

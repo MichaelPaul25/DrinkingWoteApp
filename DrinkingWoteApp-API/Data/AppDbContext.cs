@@ -1,9 +1,10 @@
 ﻿using DrinkingWoteApp_API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DrinkingWoteApp_API.Data
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -21,6 +22,8 @@ namespace DrinkingWoteApp_API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //Relation User to Consument (One to One)
             modelBuilder.Entity<User>()
                         .HasOne(c => c.Consument)

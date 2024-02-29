@@ -126,7 +126,7 @@ namespace DrinkingWoteApp_API.Controllers
         }
 
         //Create new Consument
-        [HttpPost]
+        [HttpPost("{ConsumentId}/{CrewId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateOrder([FromBody] OrderDto createOrder, int ConsumentId, int CrewId)

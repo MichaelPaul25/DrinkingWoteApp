@@ -29,7 +29,7 @@ namespace DrinkingWoteApp_API.Repository
             //return _context.Consuments.Find(id);
             var consumentDetails = _context.Consuments.Where(c => c.Id == id)
                                     .Include(a => a.Address)
-                                    .Include(c => c.User).FirstOrDefault();
+                                    .FirstOrDefault();
             //var address = _context.Address.Where(a => a.AddressId = consumentDetails.Address)
 
             return consumentDetails;
@@ -64,7 +64,7 @@ namespace DrinkingWoteApp_API.Repository
 
         public bool CheckUserHaveCustomerId(int userId)
         {
-            var consument = _context.Users.Where(c => c.Id == userId).Select(a => a.Consument != null).FirstOrDefault();
+            var consument = _context.Users.Where(c => c.Id == userId.ToString()).Select(a => a.Consument != null).FirstOrDefault();
             if (consument)
                 return true;
             else
